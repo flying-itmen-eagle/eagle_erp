@@ -1,0 +1,65 @@
+<div class="login-container">
+  <!-- Animated background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <mat-card class="login-card">
+    <!-- Brand Header -->
+    <div class="brand-header">
+      <div class="brand-icon-wrapper">
+        <mat-icon class="brand-icon">hub</mat-icon>
+      </div>
+      <h1 class="brand-title">小型 ERP 系統</h1>
+      <p class="brand-subtitle">企業資源規劃管理平台</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <!-- Quick Role Selector -->
+      <p class="section-label">🚀 Demo 快速切換角色</p>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>切換角色</mat-label>
+        <mat-icon matPrefix>badge</mat-icon>
+        <mat-select formControlName="role" (selectionChange)="onRoleChange($event.value)">
+          @for (u of mockUsers; track u.username) {
+            <mat-option [value]="u.username">{{ u.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-divider class="divider"></mat-divider>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>帳號</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <input matInput formControlName="username" placeholder="輸入帳號" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>密碼</mat-label>
+        <mat-icon matPrefix>lock</mat-icon>
+        <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" />
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword.set(!hidePassword())">
+          <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      @if (errorMessage()) {
+        <div class="error-message">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <button mat-raised-button class="login-btn" type="submit" [disabled]="loginForm.invalid || isLoading()">
+        @if (isLoading()) {
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>登入中...</span>
+        } @else {
+          <mat-icon>login</mat-icon>
+          <span>登入系統</span>
+        }
+      </button>
+    </form>
+  </mat-card>
+</div>

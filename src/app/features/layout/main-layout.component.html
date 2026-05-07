@@ -1,0 +1,65 @@
+<mat-sidenav-container class="layout-container">
+
+  <!-- Sidenav -->
+  <mat-sidenav #sidenav [opened]="sidenavOpen()" mode="side" class="sidenav">
+    <div class="sidenav-brand">
+      <div class="brand-logo">
+        <mat-icon>hub</mat-icon>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">ERP 系統</span>
+        <span class="brand-sub">企業資源規劃</span>
+      </div>
+    </div>
+
+    <mat-divider class="brand-divider"></mat-divider>
+
+    <nav mat-nav-list class="nav-list">
+      @for (item of visibleMenuItems(); track item.route) {
+        <a mat-list-item
+           [routerLink]="item.route"
+           routerLinkActive="active-nav-item"
+           class="nav-item"
+           [matTooltip]="item.title"
+           matTooltipPosition="right">
+          <mat-icon matListItemIcon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span matListItemTitle class="nav-label">{{ item.title }}</span>
+        </a>
+      }
+    </nav>
+
+    <!-- User info at bottom -->
+    <div class="sidenav-footer">
+      <mat-divider></mat-divider>
+      <div class="user-chip">
+        <div class="user-avatar">{{ currentUser()?.displayName?.charAt(0) }}</div>
+        <div class="user-detail">
+          <span class="user-name">{{ currentUser()?.displayName }}</span>
+          <span class="user-role">{{ currentUser()?.role }}</span>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="main-content">
+    <!-- Toolbar -->
+    <mat-toolbar class="toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()" class="menu-toggle">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">小型 ERP 系統</span>
+      <span class="spacer"></span>
+      <span class="toolbar-user">{{ currentUser()?.displayName }}</span>
+      <button mat-icon-button (click)="logout()" matTooltip="登出系統" class="logout-btn">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- Page Content -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
